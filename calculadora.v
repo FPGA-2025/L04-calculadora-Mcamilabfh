@@ -1,15 +1,19 @@
 module calculadora(
-  input   [7:0] entrada_A,
-  input   [7:0] entrada_B,
-  input   [2:0] codigo,
-  output  [7:0] saida
+  input  [7:0] entrada_A,
+  input  [7:0] entrada_B,
+  input  [2:0] codigo,
+  output reg [7:0] saida
 );
 
-  assign saida = (codigo == 3'b000) ? 8'b00000000 :               // zerar
-                 (codigo == 3'b001) ? entrada_A :                // mostrar A
-                 (codigo == 3'b010) ? entrada_B :                // mostrar B
-                 (codigo == 3'b011) ? entrada_A + entrada_B :    // somar
-                 (codigo == 3'b100) ? entrada_A - entrada_B :    // subtrair
-                 8'b00000000;                                    // operação inválida
+  always @(*) begin
+    case (codigo)
+      3'b000: saida = 8'b00000000;               // Zerar
+      3'b001: saida = entrada_A;                 // Mostrar A
+      3'b010: saida = entrada_B;                 // Mostrar B
+      3'b011: saida = entrada_A + entrada_B;     // Somar
+      3'b100: saida = entrada_A - entrada_B;     // Subtrair
+      default: saida = 8'b00000000;              // Código inválido
+    endcase
+  end
 
 endmodule
